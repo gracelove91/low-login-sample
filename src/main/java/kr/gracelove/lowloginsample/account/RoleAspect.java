@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Stream;
 
 /**
  * Created by GraceLove
