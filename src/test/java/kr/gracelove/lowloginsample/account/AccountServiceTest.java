@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -42,7 +44,7 @@ class AccountServiceTest {
         String password = "password";
         AccountRole role = AccountRole.USER;
 
-        Account account = new Account(username, password, role);
+        Account account = new Account(username, password, List.of(role));
         given(repository.save(account)).willReturn(account);
 
         //when

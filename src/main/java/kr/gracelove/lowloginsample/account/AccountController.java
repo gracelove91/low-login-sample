@@ -33,16 +33,16 @@ public class AccountController {
         return "redirect:index";
     }
 
-    @GetMapping("/role1")
-    @RoleCheck(role = AccountRole.USER)
-    public String role1(HttpSession session) {
-        return "role1";
+    @GetMapping("/user")
+    @RoleCheck(role = {AccountRole.USER, AccountRole.ADMIN})
+    public String user(HttpSession session) {
+        return "user";
     }
 
 
-    @GetMapping("/role2")
+    @GetMapping("/admin")
     @RoleCheck(role = AccountRole.ADMIN)
-    public String role2(HttpSession session) {
-        return "role2";
+    public String admin(HttpSession session) {
+        return "admin";
     }
 }

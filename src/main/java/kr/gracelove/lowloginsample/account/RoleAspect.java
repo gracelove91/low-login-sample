@@ -25,24 +25,32 @@ public class RoleAspect {
 
     @Around("@annotation(roleCheck)")
     public Object RoleCheck(ProceedingJoinPoint pjp, RoleCheck roleCheck) throws Throwable {
-        HttpSession session = null;
+        AccountDto sessionAuth = null;
 
         for(Object o : pjp.getArgs()) {
             if (o instanceof HttpSession) {
-                session = (HttpSession)o;
+                HttpSession session = (HttpSession)o;
+                Object auth = session.getAttribute("auth");
+                sessionAuth = (AccountDto) auth;
+                break;
             }
         }
 
-        AccountDto sessionAuth = null;
-        if(session != null) {
-            Object auth = session.getAttribute("auth");
-            sessionAuth = (AccountDto) auth;
-        }
-
-        if(sessionAuth == null || !sessionAuth.getRole().equals(roleCheck.role())) {
+        if(sessionAuth == null) {
             throw new AccessDeniedException("접근할 수 없는 권한.");
         }
 
+        isValidRole(roleCheck, sessionAuth);
+
         return pjp.proceed();
+    }
+
+    private void isValidRole(RoleCheck roleCheck, AccountDto sessionAuth) {
+        for (AccountRole role : roleCheck.role()) {
+            if(sessionAuth.getRole().contains(role)) {
+                return;
+            }
+        }
+        throw new AccessDeniedException("접근할 수 없는 권한.");
     }
 }

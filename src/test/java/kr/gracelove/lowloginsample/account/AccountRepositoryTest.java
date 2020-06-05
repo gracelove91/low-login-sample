@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -33,7 +35,7 @@ class AccountRepositoryTest {
     @BeforeEach
     @DisplayName("테스트 하기 전 Account 저장한다.")
     void setUp() {
-        Account account = new Account(DEFAULT_USERNAME, DEFAULT_PASSWORD, DEFAULT_ROLE);
+        Account account = new Account(DEFAULT_USERNAME, DEFAULT_PASSWORD, List.of(DEFAULT_ROLE));
         repository.save(account);
     }
 

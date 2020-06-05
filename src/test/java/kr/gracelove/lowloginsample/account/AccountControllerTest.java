@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +48,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     void login() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
+        AccountDto account = new AccountDto("gracelove", "1234", List.of(AccountRole.USER));
         doNothing().when(accountService).validAccountInformation(account);
 
         mockMvc.perform(post("/login")
@@ -59,39 +61,40 @@ class AccountControllerTest {
     }
 
     //////////////////////////
-    ////// role1() 테스트 //////
+    ////// user() 테스트 //////
     //////////////////////////
     @Test
-    @DisplayName("role1() 접근 시 AccountRole.role1 접근 가능하다.")
+    @DisplayName("user() 접근 시 AccountRole.ADMIN 접근 가능하다.")
     void roleAdminAccessAdminPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
+        AccountDto account = new AccountDto("gracelove", "1234", List.of(AccountRole.ADMIN));
 
-        mockMvc.perform(get("/role1")
+        mockMvc.perform(get("/user")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(account))
                     .sessionAttr("auth", account))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("role1"));
+                .andExpect(view().name("user"));
     }
 
     @Test
-    @DisplayName("role1() 접근 시 AccountRole.role2 접근 불가능하다.(CODE 403)")
+    @DisplayName("user() 접근 시 AccountRole.USER 접근 가능하다.")
     void roleUserAccessAdminPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ADMIN);
+        AccountDto account = new AccountDto("gracelove", "1234", List.of(AccountRole.USER));
 
-        mockMvc.perform(get("/role1")
+        mockMvc.perform(get("/user")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(account))
                     .sessionAttr("auth", account))
                 .andDo(print())
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk())
+                .andExpect(view().name("user"));
     }
 
     @Test
-    @DisplayName("role1() 접근 시 로그인안한 상태 접근 불가능하다.(CODE 403)")
+    @DisplayName("user() 접근 시 로그인안한 상태 접근 불가능하다.(CODE 403)")
     void anonymousAccessAdminPage() throws Exception {
-        mockMvc.perform(get("/role1"))
+        mockMvc.perform(get("/user"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -102,11 +105,11 @@ class AccountControllerTest {
     //////////////////////////
 
     @Test
-    @DisplayName("role2() 접근 시 AccountRole.role1 접근 불가능하다.")
+    @DisplayName("admin() 접근 시 AccountRole.USER 접근 불가능하다.(CODE 403)")
     void roleAdminAccessUserPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
+        AccountDto account = new AccountDto("gracelove", "1234", List.of(AccountRole.USER));
 
-        mockMvc.perform(get("/role2")
+        mockMvc.perform(get("/admin")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(account))
                     .sessionAttr("auth", account))
@@ -115,23 +118,23 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("role2() 접근 시 AccountRole.role2 접근 가능하다.")
+    @DisplayName("admin() 접근 시 AccountRole.ADMIN 접근 가능하다.")
     void roleUserAccessUserPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ADMIN);
+        AccountDto account = new AccountDto("gracelove", "1234", List.of(AccountRole.ADMIN));
 
-        mockMvc.perform(get("/role2")
+        mockMvc.perform(get("/admin")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(account))
                     .sessionAttr("auth", account))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("role2"));
+                .andExpect(view().name("admin"));
     }
 
     @Test
-    @DisplayName("role2() 접근 시 로그인안한 상태 접근 불가능하다.(CODE 403)")
+    @DisplayName("admin() 접근 시 로그인안한 상태 접근 불가능하다.(CODE 403)")
     void anonymousAccessUserPage() throws Exception {
-        mockMvc.perform(get("/role2"))
+        mockMvc.perform(get("/admin"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
