@@ -24,7 +24,7 @@ class AccountRepositoryTest {
 
     private static final String DEFAULT_USERNAME = "GRACELOVE";
     private static final String DEFAULT_PASSWORD = "1234";
-    private static final AccountRole DEFAULT_ROLE = AccountRole.ROLE2;
+    private static final AccountRole DEFAULT_ROLE = AccountRole.ADMIN;
 
 
     @Autowired

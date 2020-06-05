@@ -23,12 +23,12 @@ public class Account {
 
     private String username;
 
-    @Enumerated(EnumType.STRING)
-    private AccountRole role;
+    @ElementCollection
+    private List<AccountRole> role;
 
     private String password;
 
-    public Account(String username, String password, AccountRole role) {
+    public Account(String username, String password, List<AccountRole> role) {
         this.username = username;
         this.role = role;
         this.password = password;
@@ -54,7 +54,7 @@ public class Account {
         return username;
     }
 
-    public AccountRole getRole() {
+    public List<AccountRole> getRole() {
         return role;
     }
 }

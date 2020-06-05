@@ -46,7 +46,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     void login() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ROLE1);
+        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
         doNothing().when(accountService).validAccountInformation(account);
 
         mockMvc.perform(post("/login")
@@ -64,7 +64,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("role1() 접근 시 AccountRole.role1 접근 가능하다.")
     void roleAdminAccessAdminPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ROLE1);
+        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
 
         mockMvc.perform(get("/role1")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("role1() 접근 시 AccountRole.role2 접근 불가능하다.(CODE 403)")
     void roleUserAccessAdminPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ROLE2);
+        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ADMIN);
 
         mockMvc.perform(get("/role1")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("role2() 접근 시 AccountRole.role1 접근 불가능하다.")
     void roleAdminAccessUserPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ROLE1);
+        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.USER);
 
         mockMvc.perform(get("/role2")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -117,7 +117,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("role2() 접근 시 AccountRole.role2 접근 가능하다.")
     void roleUserAccessUserPage() throws Exception {
-        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ROLE2);
+        AccountDto account = new AccountDto("gracelove", "1234", AccountRole.ADMIN);
 
         mockMvc.perform(get("/role2")
                     .contentType(MediaType.APPLICATION_JSON)

@@ -1,5 +1,6 @@
 package kr.gracelove.lowloginsample.account;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,9 +17,9 @@ public class AccountDto {
 
     private String username;
     private String password;
-    private AccountRole role;
+    private List<AccountRole> role;
 
-    public AccountDto(String username, String password, AccountRole role) {
+    public AccountDto(String username, String password, List<AccountRole> role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -39,7 +40,7 @@ public class AccountDto {
         return password;
     }
 
-    public AccountRole getRole() {
+    public List<AccountRole> getRole() {
         return role;
     }
 

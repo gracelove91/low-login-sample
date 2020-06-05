@@ -11,5 +11,5 @@ package kr.gracelove.lowloginsample.account;
  */
 
 public enum AccountRole {
-    ROLE1, ROLE2
+    USER, ADMIN
 }

@@ -40,7 +40,7 @@ class AccountServiceTest {
         //given
         String username = "gracelove";
         String password = "password";
-        AccountRole role = AccountRole.ROLE1;
+        AccountRole role = AccountRole.USER;
 
         Account account = new Account(username, password, role);
         given(repository.save(account)).willReturn(account);
