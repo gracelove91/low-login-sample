@@ -35,14 +35,14 @@ public class AccountController {
 
     @GetMapping("/user")
     @RoleCheck(role = {AccountRole.USER, AccountRole.ADMIN})
-    public String user(HttpSession session) {
+    public String user() {
         return "user";
     }
 
 
     @GetMapping("/admin")
     @RoleCheck(role = AccountRole.ADMIN)
-    public String admin(HttpSession session) {
+    public String admin() {
         return "admin";
     }
 }
